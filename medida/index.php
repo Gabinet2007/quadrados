@@ -11,7 +11,7 @@ include_once('medida.php');
 <body>
 
 
-    <form action="medida.php" method="post">
+    <form action="medida.php" method="post" enctype="multipart/form-data">
 
         <input type="text" name="id" id="id" value="<?= $id ?>" readonly><br>
         <label for="altura">Altura:</label>
@@ -32,19 +32,19 @@ include_once('medida.php');
         <input type="submit" name="acao" id="acao" value="Buscar"><br>
         <a href="../quadrado/index.php">quadrado</a><br><br><br>
     </form>
-    <!-- <table border="1px">
-        <th>Id</th> <th>Altura</th> <th>cor</th> <th>unidade</th> -->
-    <?php
-    foreach ($lista as $medidas) {
-        echo "<td><a href='index.php?id=" . $medidas->getIdMedida() . "'>" . $medidas->getNome() . "</a></td><br>";
-    }
+    <table border="1px">
+        <th>Id</th><th>Medida</th>
+        <?php
+        foreach ($lista as $medidas) {
+            echo "<tr><td><a href='index.php?id=" . $medidas->getIdMedida() . "'>" . $medidas->getIdMedida() . "</a></td><td>". $medidas->getNome() . "</td><tr>";
+        }
 
 
 
 
 
-    ?>
-    <!-- </table> -->
+        ?>
+    </table>
 </body>
 
 </html>

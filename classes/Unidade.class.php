@@ -84,12 +84,12 @@ class Medida
     }
 
 
-    public static function listar($tipo = 0, $busca = "")
+    public static function listar($tipobusca = 0, $busca = "")
     {
         $conexao = Database::getInstance();
         $sql = "SELECT * FROM medida";
-        if ($tipo > 0)
-            switch ($tipo) {
+        if ($tipobusca > 0)
+            switch ($tipobusca) {
                 case 1:
                     $sql .= " WHERE idMedida = :busca";
                     break;
@@ -99,7 +99,7 @@ class Medida
                     break;
             }
         $comando = $conexao->prepare($sql);
-        if ($tipo > 0)
+        if ($tipobusca > 0)
             $comando->bindValue(':busca', $busca);
         $comando->execute();
 
