@@ -1,14 +1,14 @@
 <?php
-require_once("../classes/Quadrado.class.php");
+require_once("../classes/Circulo.class.php");
 require_once("../classes/Database.class.php");
 require_once("../classes/Unidade.class.php");
 
 
 
-$id = isset($_GET['id']) ? $_GET['id'] : 0;
+$id = isset($_GET['idCirculo']) ? $_GET['idCirculo'] : 0;
 $msg = isset($_GET['MSG']) ? $_GET['MSG'] : "";
 if ($id > 0) {
-    $contato = Quadrado::listar(1, $id)[0];
+    $contato = Circulo::listar(1, $id)[0];
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -29,24 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // echo $caminho_relativo;
             // die();
             $medida = Medida::listar(1, $unidade)[0];
-            $quadrado = new Quadrado($id, $lado, null, $caminho_relativo, $medida);
+            $circulo = new Circulo($id, $lado, null, $caminho_relativo, $medida);
         } else {
             $medida = Medida::listar(1, $unidade)[0];
-            $quadrado = new Quadrado($id, $lado, $cor, null, $medida);
+            $circulo = new Circulo($id, $lado, $cor, null, $medida);
         }
 
 
         // $medida = Medida::listar(1, $unidade)[0];
-        // $quadrado = new Quadrado($id, $lado, $cor, $medida);
+        // $circulo = new Circulo($id, $lado, $cor, $medida);
         $resultado = "";
         if ($acao == 'salvar') {
             if ($id > 0) {
-                $resultado = $quadrado->alterar();
+                $resultado = $circulo->alterar();
             } else {
-                $resultado = $quadrado->incluir();
+                $resultado = $circulo->incluir();
             }
         } elseif ($acao == 'excluir') {
-            $resultado = $quadrado->excluir();
+            $resultado = $circulo->excluir();
         }
         if ($resultado) {
             move_uploaded_file($tmp_nome, IMG . $nome_unico);
@@ -60,5 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $busca = isset($_GET['busca']) ? $_GET['busca'] : "";
     $tipobusca = isset($_GET['tipobusca']) ? $_GET['tipobusca'] : 0;
-    $lista = Quadrado::listar($tipobusca, $busca);
+    $lista = Circulo::listar($tipobusca, $busca);
 }

@@ -3,7 +3,7 @@ require_once("../classes/Database.class.php");
 require_once("../classes/Unidade.class.php");
 require_once("../classes/Formas.class.php");
 
-class Quadrado extends Formas
+class Circulo extends Formas
 {
     private $altura;
 
@@ -27,7 +27,7 @@ class Quadrado extends Formas
     }
     public function incluir()
     {
-        $sql = 'INSERT INTO quadrado (altura, cor, idMedida, idQuadrado, imagem)   
+        $sql = 'INSERT INTO circulo (altura, cor, idMedida, idCirculo, imagem)   
                 VALUES (:altura, :cor, :idMedida, :id, :imagem)';
 
         $parametros = array(
@@ -43,7 +43,7 @@ class Quadrado extends Formas
     public function excluir()
     {
         $conexao = Database::getInstance();
-        $sql = 'DELETE FROM quadrado WHERE idQuadrado = :id';
+        $sql = 'DELETE FROM circulo WHERE idCirculo = :id';
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', parent::getId());
         return $comando->execute();
@@ -51,20 +51,20 @@ class Quadrado extends Formas
 
     public function alterar()
     {
-        $sql = 'UPDATE quadrado 
-                SET altura = :altura, cor = :cor, idMedida = :idMedida, idQuadrado = :id, imagem = :imagem
-                WHERE idQuadrado = :id';
+        $sql = 'UPDATE circulo 
+                SET altura = :altura, cor = :cor, idMedida = :idMedida, idCirculo = :id, imagem = :imagem
+                WHERE idCirculo = :id';
         $parametros = array(':altura' => $this->getAltura(), ':cor' => parent::getCor(), ':idMedida' => parent::getIdMedida()->getIdMedida(), ':id' => parent::getId(), ':imagem' => parent::getImagem());
         return Database::executar($sql, $parametros);
     }
 
     public static function listar($tipobusca = 0, $busca = ""):array
     {
-        $sql = "SELECT * FROM quadrado";
+        $sql = "SELECT * FROM circulo";
         if ($tipobusca > 0) {
             switch ($tipobusca) {
                 case 1:
-                    $sql .= " WHERE idQuadrado = :busca";
+                    $sql .= " WHERE idCirculo = :busca";
                     break;
                 case 2:
                     $sql .= " WHERE altura LIKE :busca";
@@ -86,27 +86,32 @@ class Quadrado extends Formas
             $parametros = array(':busca' => $busca);
 
         $comando = Database::executar($sql, $parametros);
-        $quadrados = array();
+        $circulos = array();
         while ($forma = $comando->fetch(PDO::FETCH_ASSOC)) {
             $medida = Medida::listar(1, $forma['idMedida'])[0];
-            $quadrado = new Quadrado($forma['idQuadrado'], $forma['altura'], $forma['cor'], $forma['imagem'], $medida);
-            array_push($quadrados, $quadrado);
+            $circulo = new circulo($forma['idCirculo'], $forma['altura'], $forma['cor'], $forma['imagem'], $medida);
+            array_push($circulos, $circulo);
         }
-        return $quadrados;
+        return $circulos;
     }
     public function desenhar()
     {
-        return "<div class = 'container' style='background-color:" . $this->getCor() . "; background-image: url(" . parent::getImagem() . "); background-repeat:no-repeat;background-size:100% 100%; width:" . $this->getAltura() . $this->getIdMedida()->getNome() . "; height:" . $this->getAltura() . $this->getIdMedida()->getNome() . "'></div><br> ";
-    }
-    public function calcularPerimetro()
-    {
-        $peri = 4 * $this->getAltura();
-        return "O perímetro é $peri ".parent::getIdMedida()->getNome();
+        return "<a 
+        href='index.php?idCirculo=" . $this->getId() . "'>
+        <div class='container' style='background-image:url(".'"'.$this->getImagem().'"'.");
+        border-radius: 50%;
+        background-color: " . $this->getCor() . "; 
+        background-repeat:no repeat;
+        background-size: 100% 100%;
+        width:" . $this->getAltura() . $this->getIdMedida()->getNome() . "; 
+        height:" . $this->getAltura() . $this->getIdMedida()->getNome() . "'> </div></a><br>";
     }
 
-    public function calcularArea()
-    {
-        $area = $this->getAltura() * $this->getAltura();
-        return "A área é $area ".parent::getIdMedida()->getNome();
+    public function calcularPerimetro(){
+        return 2 * ($this->altura/2) * 3.14 . " " . $this->getIdMedida()->getNome();
+    }
+
+    public function calcularArea(){
+        return 3.14 * (($this->altura/2) * ($this->altura/2))  . " " . $this->getIdMedida()->getNome()."²";
     }
 }

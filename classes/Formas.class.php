@@ -1,19 +1,36 @@
 <?php
-
-abstract class Formas{
+abstract class Formas
+{
     private $id;
-    private $altura;
     private $cor;
     private $idMedida;
     private $imagem;
-    
-    public function  __construct($id = 0, $altura = 1, $cor = "black", $imagem = "null", Medida $idMedida = null)
+
+    public function  __construct($id = 0, $cor = "null", $imagem = "null", Medida $idMedida = null)
     {
         $this->setId($id);
-        $this->setAltura($altura);
         $this->setCor($cor);
         $this->setIdMedida($idMedida);
         $this->setImagem($imagem);
+    }
+
+    public function setId($id)
+    {
+        if ($id < 0)
+            throw new Exception("Erro: id inválido!");
+        else
+            $this->id = $id;
+    }
+
+
+    public function setCor($cor)
+    {
+        $this->cor = $cor;
+    }
+
+    public function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
     }
 
     public function setIdMedida(Medida $idMedida)
@@ -21,39 +38,9 @@ abstract class Formas{
         $this->idMedida = $idMedida;
     }
 
-    public function setId($novoId)
-    {
-        if ($novoId < 0)
-            throw new Exception("Erro: id inválido!");
-        else
-            $this->id = $novoId;
-    }
-    public function setImagem($novoImagem)
-    {
-            $this->imagem = $novoImagem;
-    }
-
-    public function setAltura($novoAltura)
-    {
-        if ($novoAltura < 1)
-            throw new Exception("Erro, número indefinido");
-        else
-            $this->altura = $novoAltura;
-    }
-
-    public function setCor($novoCor)
-    {
-            $this->cor = $novoCor;
-    }
-
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getAltura()
-    {
-        return $this->altura;
     }
 
     public function getCor()
@@ -65,9 +52,16 @@ abstract class Formas{
     {
         return $this->idMedida;
     }
+
     public function getImagem()
     {
         return $this->imagem;
     }
-    
+    abstract public function incluir();
+    abstract public function alterar();
+    abstract public function excluir();
+    abstract public static function listar($tipo=0,$busca=""):array;
+    abstract public function desenhar();
+    abstract public function calcularArea();
+    abstract public function calcularPerimetro();
 }

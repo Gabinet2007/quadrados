@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 include_once('medida.php');
+include ('../outros/navbar.php');
 ?>
 
 <head>
@@ -13,7 +14,7 @@ include_once('medida.php');
 
     <form action="medida.php" method="post" enctype="multipart/form-data">
 
-        <input type="text" name="id" id="id" value="<?= $id ?>" readonly><br>
+        <input type="text" name="id" id="id" value="<?= $id ?>" readonly hidden>
         <label for="altura">Altura:</label>
         <br>
         <label for="nome">Unidade: </label>
@@ -30,7 +31,6 @@ include_once('medida.php');
             <option value="2">Nome</option>
         </select>
         <input type="submit" name="acao" id="acao" value="Buscar"><br>
-        <a href="../quadrado/index.php">quadrado</a><br><br><br>
     </form>
     <table border="1px">
         <th>Id</th><th>Medida</th>

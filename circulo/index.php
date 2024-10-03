@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include_once('quadrado.php');
-// include ('../outros/navbar.php');
+include_once('circulo.php');
+// include('../outros/navbar.php');
 ?>
 
 <head>
@@ -12,9 +12,9 @@ include_once('quadrado.php');
 <body>
 
 
-    <form action="quadrado.php" method="post" enctype="multipart/form-data">
+    <form action="circulo.php" method="post" enctype="multipart/form-data">
 
-        <input type="text" name="id" id="id" value="<?= $id ?>" readonly><br>
+        <input type="text" name="id" id="id" value="<?= $id ?>" readonly hidden>
         <label for=" altura">Altura:</label>
         <input type="number" name="altura" id="altura" value="<?= $id ? $contato->getAltura() : 0 ?>"><br>
         <label for="escolhaQuad">Tipo:</label>
@@ -53,17 +53,23 @@ include_once('quadrado.php');
         </select>
         <input type="submit" name="acao" id="acao" value="Buscar"><br>
     </form>
+    <table border="0px">
         <?php
-        foreach ($lista as $quadrado) {
+        foreach ($lista as $circulo) {
             echo "
-        Altura: " . $quadrado->getAltura() . "<br>
-        Cor: " . $quadrado->getCor() . "<br>
-        Unidade de medida: " . $quadrado->getIdMedida()->getNome()  . "</a><br>
-        Perímetro: " . $quadrado->calcularPerimetro() . "<br>
-        Área: " . $quadrado->calcularArea()."<br><br>";
-            echo "<a href='index.php?id=" . $quadrado->getId() . "'>" . $quadrado->desenhar() . "</a><hr>";
+            Altura: " . $circulo->getAltura() . "<br>
+            Cor: " . $circulo->getCor() . "<br>
+            Unidade de medida: " . $circulo->getIdMedida()->getNome()  . "</a><br>
+            Perímetro: " . $circulo->calcularPerimetro() . "<br>
+            Área: " . $circulo->calcularArea() . "<br>";
+            echo "<a href='index.php?id=" . $circulo->getId() . "'>" . $circulo->desenhar() . "</a><hr>";
         }
+
+
+
+
         ?>
+    </table>
     <!-- <script src="../js/tipo.js"></script> -->
 </body>
 

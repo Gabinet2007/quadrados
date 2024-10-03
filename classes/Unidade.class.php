@@ -1,6 +1,4 @@
 <?php
-require_once("../config/config.inc.php");
-
 require_once("../classes/Database.class.php");
 
 class Medida
@@ -23,12 +21,12 @@ class Medida
         else
             $this->idMedida = $novoIdMedida;
     }
-    public function setNome($novoNome)
+    public function setNome($nome)
     {
-        if ($novoNome == "")
+        if ($nome == "")
             throw new Exception("Erro: nome inválido!");
         else
-            $this->nome = $novoNome;
+            $this->nome = $nome;
     }
 
     public function getIdMedida()
@@ -39,6 +37,8 @@ class Medida
     {
         return $this->nome;
     }
+
+
     public function incluir()
     {
         $sql = 'INSERT INTO medida (idMedida, nome)   
@@ -47,10 +47,6 @@ class Medida
         $parametros = array(':idMedida' => $this->idMedida, ':nome' => $this->nome);
         return Database::executar($sql, $parametros);
     }
-
-    /*public function desenhar($quadrado){
-        return "<center> <a href='index.php?id=".$quadrado->getid()."'><div class='container' style='background-color: ".$quadrado->getCor() . "; width:".$quadrado->getLadoTamanho().$quadrado->getUnidadeMedida()."; height:".$quadrado->getLadoTamanho().$quadrado->getUnidadeMedida()."'> </div></a></center><br>";
-    }*/
 
     public function excluir()
     {
@@ -70,25 +66,11 @@ class Medida
         return Database::executar($sql, $parametros);
     }
 
-    public static function buscaPorId($idMedida){
-        $sql = "SELECT * FROM medida WHERE idMedida = :idMedida";
-        $parametros = array(':idMedida' => $idMedida);
-        $comando = Database::executar($sql, $parametros);
-        $dados = $comando->fetch(PDO::FETCH_ASSOC);
-
-        if ($dados) {
-            return new Medida($dados['idMedida'], $dados ['nome']);
-        } else {
-            throw new Exception("Erro: Medida não encontrada.");
-        }
-    }
-
 
     public static function listar($tipobusca = 0, $busca = "")
     {
-        $conexao = Database::getInstance();
         $sql = "SELECT * FROM medida";
-        if ($tipobusca > 0)
+        if ($tipobusca > 0){
             switch ($tipobusca) {
                 case 1:
                     $sql .= " WHERE idMedida = :busca";
@@ -98,12 +80,14 @@ class Medida
                     $busca = "%{$busca}%";
                     break;
             }
-        $comando = $conexao->prepare($sql);
+        }
+        $parametros = [];
         if ($tipobusca > 0)
-            $comando->bindValue(':busca', $busca);
-        $comando->execute();
+            $parametros = array(':busca' => $busca);
 
+        $comando = Database::executar($sql, $parametros);
         $medidas = array();
+
         while ($registro = $comando->fetch()) {
 
             $medida = new Medida($registro['idMedida'], $registro['nome']);
